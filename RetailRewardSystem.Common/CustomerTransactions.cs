@@ -10,12 +10,5 @@ namespace RetailRewardSystem.Common
     public class CustomerTransactions
     {
         public  Customer Customer { get; set; }
-        public List<Transaction> Transactions { get; set; }
-
-        public CustomerTransactions()
-        { 
-            Transactions = new List<Transaction>();
-        }
-
     }
 }

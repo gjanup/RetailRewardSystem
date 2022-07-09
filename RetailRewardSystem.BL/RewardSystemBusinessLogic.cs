@@ -12,9 +12,21 @@ namespace RetailRewardSystem.BAL
     {
         RetailRewardSystemDataContext _dbContext = new RetailRewardSystemDataContext();
 
-        public void GetTransactions(CustomerTransactions customerTransactions)
+        public List<CustomerTransactions> GetTransactions()
         {
+            List<CustomerTransactions> customerTransactions = new List<CustomerTransactions>();
+            List<Customer> customers = new List<Customer>();
+            using (var _dbContext = new RetailRewardSystemDataContext())
+            {
+                customers = _dbContext.Customers.ToList();
+            }
 
+            foreach (var customer in customers)
+            {
+                customerTransactions.Add(new CustomerTransactions() { Customer = customer});
+            }
+
+            return customerTransactions;
         }
         public void SaveTransactions(CustomerTransactions customerTransactions)
         {
@@ -22,14 +34,20 @@ namespace RetailRewardSystem.BAL
             {
                 _dbContext.Customers.Add(customerTransactions.Customer);
                 _dbContext.SaveChanges();
+            }
 
-                //customerTransactions.Transactions.Select(t=>t.CustomerId<0).
-                //foreach (var transaction in customerTransactions.Transactions)
-                //{
-                //    _dbContext.Transactions.Add(transaction);
-                //}
+        }
 
-                //_dbContext.SaveChanges();
+        public void SaveTransactionsBulk(List<CustomerTransactions> customerTransactions)
+        {
+            using (var _dbContext = new RetailRewardSystemDataContext())
+            {
+                foreach (var custTrans in customerTransactions)
+                {
+                    _dbContext.Customers.Add(custTrans.Customer);
+                }
+                _dbContext.SaveChanges();
+                //_dbContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Customers ON;");
             }
 
         }
