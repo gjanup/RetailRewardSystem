@@ -9,3 +9,7 @@
 /RetailRewardSystem.Common/obj
 /RetailRewardSystem.DAL/obj
 /RetailRewardSystem.Job/obj
+/RetailRewardSystem.BL/bin/Debug/net6.0
+/RetailRewardSystem.Common/bin/Debug/net6.0
+/RetailRewardSystem.DAL/bin/Debug/net6.0
+/RetailRewardSystem.Job/bin/Debug/net6.0

@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\RetailRewardSystem.Common\RetailRewardSystem.Common.csproj" />
+    <ProjectReference Include="..\RetailRewardSystem.DAL\RetailRewardSystem.DAL.csproj" />
+  </ItemGroup>
+
 </Project>

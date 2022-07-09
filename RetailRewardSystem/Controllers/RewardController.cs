@@ -6,7 +6,6 @@ namespace RetailRewardSystem.Web.Controllers
     [Route("[controller]")]
     public class RewardController : ControllerBase
     {
-        public
 
     }
 }
