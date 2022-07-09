@@ -19,11 +19,19 @@ namespace RetailRewardSystem.DAL
         }
 
         public virtual DbSet<Customer> Customers { get; set; }
+
         public virtual DbSet<Transaction> Transactions { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(@"Server=(localdb)\MSSQLLocalDB;Database=RetailRewardSystem");
         }
+
+        //protected override void OnModelCreating(ModelBuilder modelBuilder)
+        //{
+        //    modelBuilder.Entity<Customer>().ToTable("Customers");
+        //}
+
+
     }
 }

@@ -63,39 +63,48 @@ void InitDataSetUp()
     List<Transaction> transactions = new List<Transaction>();
     
     Customer customer = new Customer();
+    customer.Id = 1;
     customer.Name = "Anup";
 
     Transaction transaction = new Transaction();
     transaction.Date = new DateTime(2022,4,7);
     transaction.PurchaseAmount = 126;
+    transaction.Id = 1;
     customer.Transactions.Add(transaction);
 
     transaction.Date = new DateTime(2022, 4, 15);
     transaction.PurchaseAmount = 200;
+    transaction.Id = 2;
     customer.Transactions.Add(transaction);
 
     transaction.Date = new DateTime(2022, 4, 26);
     transaction.PurchaseAmount = 150;
+    transaction.Id = 3;
     customer.Transactions.Add(transaction);
 
     transaction.Date = new DateTime(2022, 5, 5);
     transaction.PurchaseAmount = 45;
+    transaction.Id = 4;
     customer.Transactions.Add(transaction);
 
     transaction.Date = new DateTime(2022, 5, 15);
     transaction.PurchaseAmount = 58;
+    transaction.Id = 5;
     customer.Transactions.Add(transaction);
 
     transaction.Date = new DateTime(2022, 5, 28);
     transaction.PurchaseAmount = 01;
+    transaction.Id = 6;
     customer.Transactions.Add(transaction);
 
     transaction.Date = new DateTime(2022, 6, 25);
     transaction.PurchaseAmount = -25;
+    transaction.Id = 7;
     customer.Transactions.Add(transaction);
 
     transaction.Date = new DateTime(2022, 7, 8);
     transaction.PurchaseAmount = 128;
+    transaction.Id = 8;
     customer.Transactions.Add(transaction);
     
     List<CustomerTransactions> ct = new List<CustomerTransactions>();

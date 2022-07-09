@@ -45,6 +45,11 @@ namespace RetailRewardSystem.BAL
                 foreach (var custTrans in customerTransactions)
                 {
                     _dbContext.Customers.Add(custTrans.Customer);
+
+                    foreach (var transaction in custTrans.Customer.Transactions)
+                    { 
+                        _dbContext.Transactions.Add(transaction);
+                    }
                 }
                 _dbContext.SaveChanges();
                 //_dbContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Customers ON;");
