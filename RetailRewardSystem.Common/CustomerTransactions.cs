@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace RetailRewardSystem.Common
 {
-    public class CustomerTransactions
-    {
-        public  Customer Customer { get; set; }
-    }
+    //public class CustomerTransactions
+    //{
+    //    public  Customer Customer { get; set; }
+    //}
 }

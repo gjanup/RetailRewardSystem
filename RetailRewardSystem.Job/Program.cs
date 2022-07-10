@@ -35,25 +35,23 @@ void RunJob()
         {
             foreach (var transaction in transactions)
             {
-                if (transaction.Customer.Transactions != null && transaction.Customer.Transactions.Count > 0)
-                {
-                    foreach (var tran in transaction.Customer.Transactions)
-                    {
-                        if (tran.RewardPoints == null)
+                        if (transaction.RewardPoints == null)
                         {
-                            if (tran.PurchaseAmount > 50 && tran.PurchaseAmount <= 100)
+                            if (transaction.PurchaseAmount > 50 && transaction.PurchaseAmount <= 100)
                             {
-                                tran.RewardPoints = tran.PurchaseAmount - 50;
+                                transaction.RewardPoints = transaction.PurchaseAmount - 50;
                             }
-                            else if(tran.PurchaseAmount >= 100)
+                            else if (transaction.PurchaseAmount >= 100)
                             {
-                                tran.RewardPoints = (tran.PurchaseAmount - 50) + (tran.PurchaseAmount - 100);
+                                transaction.RewardPoints = (transaction.PurchaseAmount - 50) + (transaction.PurchaseAmount - 100);
                             }
                         }
-                    }
-                }
             }
             rewardSystemBusinessLogic.SaveTransactionsBulk(transactions);
+        }
+        else
+        { 
+            Thread.Sleep(60000);
         }
     }
 }
@@ -63,52 +61,51 @@ void InitDataSetUp()
     List<Transaction> transactions = new List<Transaction>();
     
     Customer customer = new Customer();
-    customer.Id = 1;
     customer.Name = "Anup";
 
     Transaction transaction = new Transaction();
     transaction.Date = new DateTime(2022,4,7);
     transaction.PurchaseAmount = 126;
-    transaction.Id = 1;
     customer.Transactions.Add(transaction);
 
-    transaction.Date = new DateTime(2022, 4, 15);
-    transaction.PurchaseAmount = 200;
-    transaction.Id = 2;
-    customer.Transactions.Add(transaction);
+    Transaction transaction1 = new Transaction();
+    transaction1.Date = new DateTime(2022, 4, 15);
+    transaction1.PurchaseAmount = 200;
+    customer.Transactions.Add(transaction1);
 
-    transaction.Date = new DateTime(2022, 4, 26);
-    transaction.PurchaseAmount = 150;
-    transaction.Id = 3;
-    customer.Transactions.Add(transaction);
+    //transaction.Date = new DateTime(2022, 4, 26);
+    //transaction.PurchaseAmount = 150;
+    //transaction.Id = 3;
+    //customer.Transactions.Add(transaction);
 
-    transaction.Date = new DateTime(2022, 5, 5);
-    transaction.PurchaseAmount = 45;
-    transaction.Id = 4;
-    customer.Transactions.Add(transaction);
+    //transaction.Date = new DateTime(2022, 5, 5);
+    //transaction.PurchaseAmount = 45;
+    //transaction.Id = 4;
+    //customer.Transactions.Add(transaction);
 
-    transaction.Date = new DateTime(2022, 5, 15);
-    transaction.PurchaseAmount = 58;
-    transaction.Id = 5;
-    customer.Transactions.Add(transaction);
+    //transaction.Date = new DateTime(2022, 5, 15);
+    //transaction.PurchaseAmount = 58;
+    //transaction.Id = 5;
+    //customer.Transactions.Add(transaction);
 
-    transaction.Date = new DateTime(2022, 5, 28);
-    transaction.PurchaseAmount = 01;
-    transaction.Id = 6;
-    customer.Transactions.Add(transaction);
+    //transaction.Date = new DateTime(2022, 5, 28);
+    //transaction.PurchaseAmount = 01;
+    //transaction.Id = 6;
+    //customer.Transactions.Add(transaction);
 
-    transaction.Date = new DateTime(2022, 6, 25);
-    transaction.PurchaseAmount = -25;
-    transaction.Id = 7;
-    customer.Transactions.Add(transaction);
+    //transaction.Date = new DateTime(2022, 6, 25);
+    //transaction.PurchaseAmount = -25;
+    //transaction.Id = 7;
+    //customer.Transactions.Add(transaction);
 
-    transaction.Date = new DateTime(2022, 7, 8);
-    transaction.PurchaseAmount = 128;
-    transaction.Id = 8;
-    customer.Transactions.Add(transaction);
-    
-    List<CustomerTransactions> ct = new List<CustomerTransactions>();
-    ct.Add(new CustomerTransactions() { Customer = customer });
-    rewardSystemBusinessLogic.SaveTransactionsBulk(ct);
+    //transaction.Date = new DateTime(2022, 7, 8);
+    //transaction.PurchaseAmount = 128;
+    //transaction.Id = 8;
+    //customer.Transactions.Add(transaction);
+
+    List<Customer> ct = new List<Customer>(); 
+    ct.Add(customer);
+    //ct.Add(new CustomerTransactions() { Customer = customer });
+    rewardSystemBusinessLogic.SaveCustomerAndTransactionsBulk(ct);
 }
 

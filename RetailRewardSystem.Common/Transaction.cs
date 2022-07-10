@@ -10,7 +10,7 @@ namespace RetailRewardSystem.Common
 {
     public class Transaction
     {
-        //[Key]
+        [Key]
         public int Id { get; set; }
         public DateTime Date { get; set; }
         public int CustomerId { get; set; }

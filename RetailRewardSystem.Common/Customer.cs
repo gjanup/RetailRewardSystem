@@ -10,10 +10,10 @@ namespace RetailRewardSystem.Common
 {
     public class Customer
     {
-        //[Key]
+        [Key]
         public int Id { get; set; }
         public string? Name { get; set; }
-
+        public string? PhoneNumber { get; set; }
         public List<Transaction> Transactions { get; set; }
 
         public Customer()
