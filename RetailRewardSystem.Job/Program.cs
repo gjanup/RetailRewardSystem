@@ -1,5 +1,4 @@
-﻿// See https://aka.ms/new-console-template for more information
-using RetailRewardSystem.BAL;
+﻿using RetailRewardSystem.BAL;
 using RetailRewardSystem.Common;
 
 Console.WriteLine("Retail reward system started running");
