@@ -43,10 +43,32 @@ namespace RetailRewardSystem.BAL
             }
         }
 
+        public void CalculateReward(IEnumerable<Transaction> transactions)
+        {
+
+            if (transactions != null && transactions.Count() > 0)
+            {
+                foreach (var transaction in transactions)
+                {
+
+                        if (transaction.PurchaseAmount > 50 && transaction.PurchaseAmount <= 100)
+                        {
+                            transaction.RewardPoints = transaction.PurchaseAmount - 50;
+                        }
+                        else if (transaction.PurchaseAmount >= 100)
+                        {
+                            transaction.RewardPoints = (transaction.PurchaseAmount - 50) + (transaction.PurchaseAmount - 100);
+                        }
+                    
+                }
+            }
+        }
+
         public IEnumerable<Customer> CalculateReward(IEnumerable<Customer> customers)
         {
             foreach (var customer in customers)
             {
+                CalculateReward(customer.Transactions);
                 var groupTransaction = customer.Transactions.GroupBy(t => t.Date.Month).Select(t => new Transaction()
                 {
                     Date = t.FirstOrDefault().Date,

@@ -10,7 +10,7 @@ namespace RetailRewardSystem.Web.Controllers
     {
         IRewardSystemBusinessLogic rewardSystemBusinessLogic = new RewardSystemBusinessLogic();
 
-        [HttpGet]
+        [HttpPost]
         public Customer GetRewards(Customer customer)
         { 
             return rewardSystemBusinessLogic.GetRewards(customer);
