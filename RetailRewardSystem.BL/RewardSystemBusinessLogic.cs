@@ -8,93 +8,92 @@ using System.Threading.Tasks;
 
 namespace RetailRewardSystem.BAL
 {
-    public class RewardSystemBusinessLogic
+    public class RewardSystemBusinessLogic : IRewardSystemBusinessLogic
     {
-        RetailRewardSystemDataContext _dbContext = new RetailRewardSystemDataContext();
+        IRewardSystemDataAccess rewardSystemDataAccess = new RewardSystemDataAccess();
 
-        public List<Transaction> GetTransactions()
+       public void CalculateReward()
+        {
+            for (; ; )
+            {
+                var transactions = rewardSystemDataAccess.GetTransactions();
+
+                if (transactions != null && transactions.Count > 0)
+                {
+                    foreach (var transaction in transactions)
+                    {
+                        if (transaction.RewardPoints == null)
+                        {
+                            if (transaction.PurchaseAmount > 50 && transaction.PurchaseAmount <= 100)
+                            {
+                                transaction.RewardPoints = transaction.PurchaseAmount - 50;
+                            }
+                            else if (transaction.PurchaseAmount >= 100)
+                            {
+                                transaction.RewardPoints = (transaction.PurchaseAmount - 50) + (transaction.PurchaseAmount - 100);
+                            }
+                        }
+                    }
+                    rewardSystemDataAccess.SaveTransactionsBulk(transactions);
+                }
+                else
+                {
+                    Thread.Sleep(60000);
+                }
+            }
+        }
+
+        public IEnumerable<Customer> CalculateReward(IEnumerable<Customer> customers)
+        {
+            foreach (var customer in customers)
+            {
+                var groupTransaction = customer.Transactions.GroupBy(t => t.Date.Month).Select(t => new Transaction()
+                {
+                    Date = t.FirstOrDefault().Date,
+                    RewardPoints = t.Sum(c => c.RewardPoints),
+                    PurchaseAmount = t.Sum(c => c.PurchaseAmount)
+                });
+                if (groupTransaction != null)
+                    customer.Transactions = groupTransaction.ToList();
+            }
+            return customers;
+        }
+
+        public Customer GetRewards(Customer customer)
+        {
+            List<Transaction> transactions = rewardSystemDataAccess.GetTransactions(customer);
+
+            var groupTransaction = transactions.GroupBy(t => t.Date.Month).Select(t => new Transaction() { 
+                                                                                        Date = t.FirstOrDefault().Date,
+                                                                                        RewardPoints = t.Sum(c=>c.RewardPoints),
+                                                                                        PurchaseAmount = t.Sum(c=>c.PurchaseAmount)
+                                                                                        });
+            if (groupTransaction != null)
+                customer.Transactions = groupTransaction.ToList();
+
+            return customer;
+        }
+
+        public void SaveTransactions(IEnumerable<Customer> customers)
         {
             List<Transaction> transactions = new List<Transaction>();
-            using (var _dbContext = new RetailRewardSystemDataContext())
-            {
-                transactions = _dbContext.Transactions.Where(t => t.RewardPoints == null).ToList();
-            }
-
-            return transactions;
-        }
-        public void SaveTransactions(Customer customer)
-        {
-            using (var _dbContext = new RetailRewardSystemDataContext()) 
-            {
-                _dbContext.Customers.Add(customer);
-                _dbContext.SaveChanges();
-            }
-
-        }
-
-        public void SaveTransactionsBulk(List<Transaction> transactions)
-        {
-            using (var _dbContext = new RetailRewardSystemDataContext())
-            {
-                foreach (var transaction in transactions)
-                {
-                    var t = _dbContext.Transactions.Where(t => t.Id == transaction.Id).FirstOrDefault();
-                    if (t != null)
-                    {
-                        t.RewardPoints = transaction.RewardPoints;
-                        t.PurchaseAmount = transaction.PurchaseAmount;
-                        t.Date = transaction.Date;
-                    }
-                    else
-                    {
-                        _dbContext.Transactions.Add(transaction);
-                    }
-                }
-                _dbContext.SaveChanges();
-            }
-        }
-
-        public void SaveCustomerAndTransactionsBulk(List<Customer> customers)
-        {
-            using (var _dbContext = new RetailRewardSystemDataContext())
+            List<Customer> new_customers = new List<Customer>();
+            if (customers.Count() > 0)
             {
                 foreach (var customer in customers)
                 {
-                    if (customer.Id > 0)
-                    {
-                        var customerTransactions = _dbContext.Transactions.Where(t=>t.CustomerId == customer.Id).ToList();
-                        if (customer.Transactions.Count > 0)
-                        {
-                            foreach (var transaction in customer.Transactions)
-                            {
-                                //var dbTransaction = _dbContext.Transactions.Where(c => c.Id == transaction.Id).FirstOrDefault();
-                                if (transaction.Id > 0)
-                                {
-                                    var t = customerTransactions.Where(t => t.Id == transaction.Id).FirstOrDefault();
-                                    if (t != null)
-                                    {
-                                        t.RewardPoints = transaction.RewardPoints;
-                                        t.PurchaseAmount = transaction.PurchaseAmount;
-                                        t.Date = transaction.Date;
-                                    }
-                                }
-                                else
-                                {
-                                    _dbContext.Transactions.Add(transaction);
-                                }
-                            }
-                        }
-
+                    if (rewardSystemDataAccess.IsCustomerPresent(customer))
+                    {                   
+                        customer.Transactions.ForEach(t=> transactions.Add(t));
+                        //rewardSystemDataAccess.SaveTransactionsBulk(customer.Transactions);
                     }
-                    else
-                    {
-                        _dbContext.Customers.Add(customer);
+                    else {
+                        new_customers.Add(customer);
                     }
-
                 }
-                _dbContext.SaveChanges();
+                rewardSystemDataAccess.SaveTransactionsBulk(transactions);
+                rewardSystemDataAccess.SaveCustomerAndTransactionsBulk(new_customers);
             }
-
         }
     }
 }
