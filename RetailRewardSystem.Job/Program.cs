@@ -12,11 +12,11 @@ for (; ; )
         case "Y":
         case "y":
             InitDataSetUp();
-            //RunJob();
+            RunJob();
             break;
         case "N":
         case "n":
-            //RunJob();
+            RunJob();
             break;
         default:
             Console.WriteLine("Wrong selection, please try again...!!");
@@ -24,36 +24,11 @@ for (; ; )
     }
 }
 
-//void RunJob()
-//{
-//    for (; ; )
-//    {
-//        var transactions = rewardSystemBusinessLogic.GetTransactions();
-
-//        if (transactions != null && transactions.Count > 0)
-//        {
-//            foreach (var transaction in transactions)
-//            {
-//                        if (transaction.RewardPoints == null)
-//                        {
-//                            if (transaction.PurchaseAmount > 50 && transaction.PurchaseAmount <= 100)
-//                            {
-//                                transaction.RewardPoints = transaction.PurchaseAmount - 50;
-//                            }
-//                            else if (transaction.PurchaseAmount >= 100)
-//                            {
-//                                transaction.RewardPoints = (transaction.PurchaseAmount - 50) + (transaction.PurchaseAmount - 100);
-//                            }
-//                        }
-//            }
-//            rewardSystemBusinessLogic.SaveTransactionsBulk(transactions);
-//        }
-//        else
-//        { 
-//            Thread.Sleep(60000);
-//        }
-//    }
-//}
+void RunJob()
+{
+    IRewardSystemBusinessLogic rewardSystemBusinessLogic = new RewardSystemBusinessLogic();
+    rewardSystemBusinessLogic.CalculateReward();
+}
 
 void InitDataSetUp()
 {
